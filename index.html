@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang = "en">
 <head>
+  <link rel="preload" href="css/fonts/Satoshi-Medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/satoshi.css">
   <meta charset="UTF-8">
   <title>Vitor Ono | Web Designer</title>
-  <style>
-    @import url(css/satoshi.css);
-  
+  <style>  
     * {
       margin: 0;
       padding: 0;
@@ -20,7 +20,7 @@
       background-color: hsl(0, 0%, 0%);
       color: white;
       margin: 0;
-      font-family: 'Satoshi';
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -45,19 +45,101 @@
       letter-spacing: -0.05em;
     }
 
-    .contact{
+    .email {
       font-weight:700;
       font-size: 1rem;
       text-transform: uppercase;
       letter-spacing: -0.05em;
       text-decoration: none;
-      color: inherit;
+      color: white;
+      background-color: black;
       cursor: pointer;
+      border: none;
     }
-    .contact:hover{
+
+    .email:hover {
       background-color: white;
       color: black;
     }
+
+    .vitor-wrapper {
+      position: relative;
+    }
+
+    .socials-trigger {
+      font-weight:700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: -0.05em;
+      text-decoration: none;
+      color: white;
+      background-color: black;
+      cursor: pointer;
+      border: none;
+    }
+
+    .socials-overlay {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: auto;
+      padding-top: 12px;
+      background: black;
+      display: flex;
+      flex-direction: column;
+      min-width: 150px;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 100;
+    }
+
+    .socials-overlay a {
+      padding: 8px 0px;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: #888;
+      font-size: 0.9rem;
+      display: flex;
+      position: relative;
+      align-items: baseline;
+
+    }
+
+    .socials-overlay a::before {
+      content: "";
+      width: 0px;
+      height: 10px;
+      background-color: white;
+      margin-right: 0px;
+      opacity: 0;
+      transform: scale(0);
+      visibility: hidden;
+    }
+
+    .socials-overlay a:hover {
+      color: white;
+    }
+
+    .socials-overlay a:hover::before {
+      width: 8px;
+      margin-right: 6px;
+      opacity: 1;
+      transform: scale(1);
+      visibility: visible;
+    }
+
+    .vitor-wrapper:hover .socials-overlay {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .vitor-wrapper:hover .socials-trigger {
+      background: white;
+      color: black;
+    }
+
+
 
     h1{
       font-family: Satoshi-Medium;
@@ -213,8 +295,15 @@
   </div>
 
   <nav>
-    <div class="logo">Vitor Ono</div>
-    <a href="mailto:vitorono.design@gmail.com" target="_blank" class="contact">Contact</a>
+    <div class="vitor-wrapper">
+      <button class="socials-trigger">Vitor Ono</button>
+      <div class="socials-overlay">
+        <a href="https://www.linkedin.com/in/vitor-ono/" target="_blank" class="contact">Linkedin</a>
+        <a href="https://www.instagram.com/vitorono.design" target="_blank" class="contact">Instagram</a>       
+      </div>
+    </div>
+    <button class="email" href="mailto:work@vitorono.com" target="_blank">WORK@VITORONO.COM</button>
+
   </nav>
 
   <main>
@@ -247,38 +336,43 @@
         </a>
       </section>
 
-      <section class="location">
+      <footer class="location">
         <p>Based in Brazil. Working worldwide.</p>
-      </section>
+      </footer>
     </section>
   </main>
 
 <script>
   const videos = document.querySelectorAll('.bg-video');
   const projectRows = document.querySelectorAll('.project-row');
-  const contactBtn = document.querySelector('.contact');
+  
+  // 1. Selecionamos todos os links que devem emitir som
+  const allLinks = document.querySelectorAll('.project-row, .socials-trigger, .socials-overlay a, .email');
 
-  // Som para o botão de contato
-  contactBtn.addEventListener('mouseenter', () => {
-    new Audio('sounds/menu-selection.mp3').play();
+  // 2. Função de disparo instantâneo (a que resolveu o delay antes)
+  function playSound() {
+    // Criar uma nova instância toda vez garante que o som comece do zero absoluto
+    // e permite que vários sons se sobreponham se o usuário for muito rápido
+    const instantSound = new Audio('sounds/menu-selection.mp3');
+    instantSound.play().catch(() => {}); 
+  }
+
+  // 3. Aplicar a todos os links
+  allLinks.forEach(link => {
+    link.addEventListener('mouseenter', playSound);
   });
 
+  // 4. Lógica de Vídeos (mantida)
   projectRows.forEach(row => {
     row.addEventListener('mouseenter', () => {
-      // 1. Toca o som
-      new Audio('sounds/menu-selection.mp3').play();
-      
-      // 2. Pega o ID que você escreveu na linha (ex: "methodo-preview")
       const targetVideoId = row.getAttribute('data-video-id');
       const targetVideo = document.getElementById(targetVideoId);
 
-      // 3. Esconde todos os vídeos
       videos.forEach(v => {
         v.style.display = 'none';
         v.pause();
       });
 
-      // 4. Mostra e toca apenas o vídeo que tem o ID correspondente
       if (targetVideo) {
         targetVideo.style.display = 'block';
         targetVideo.play();
@@ -288,12 +382,28 @@
     row.addEventListener('mouseleave', () => {
       const targetVideoId = row.getAttribute('data-video-id');
       const targetVideo = document.getElementById(targetVideoId);
-      
       if (targetVideo) {
         targetVideo.style.display = 'none';
         targetVideo.pause();
       }
     });
+  });
+
+  // 5. Lógica Mobile (mantida)
+  const trigger = document.querySelector('.socials-trigger');
+  const wrapper = document.querySelector('.vitor-wrapper');
+
+  trigger.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      wrapper.classList.toggle('is-open');
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!wrapper.contains(e.target)) {
+      wrapper.classList.remove('is-open');
+    }
   });
 </script>
 
