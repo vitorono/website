@@ -83,15 +83,16 @@
       flex: 1;
       display: flex;
       align-items: center;
-      padding: 0 0 24px 24px;
+      padding: 0px 0px 24px 24px;
       width: 100%;
-      max-width: 553px;
       mix-blend-mode: difference;
       z-index: 10;
     }
 
     .hero .h1-hero {
       width: 100%;
+      max-width: 553px;
+
     }
 
     .bottom-wrapper {
@@ -99,7 +100,7 @@
       width: 100%;
       justify-content: space-between;
       align-items: last baseline;
-      padding: 24px 24px 40px 0px;
+      padding: 24px 24px 24px 24px;
     }
 
     .location {
@@ -142,16 +143,73 @@
       text-align: right;
     }
 
-    
+    @media (max-width: 910px) {
+      h1 {
+        font-size: 1.8rem;
+        max-width: 80%;
+      }
+
+      .hero {
+        padding: 40px 24px;
+      }
+
+      .bottom-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 24px
+      }
+
+      .work-list {
+        max-width: 100%;
+        margin-bottom: 40px;
+      }
+
+      #video-backgrounds {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.4rem;
+        line-height: 1.1;
+      }
+
+      nav {
+        padding: 16px 16px;
+      }
+
+      .hero {
+        padding: 0 16px 16px 16px;
+      }
+
+      .project-row .number {
+        padding-right: 16px;
+        width: 40px;
+      }
+
+      .bottom-wrapper {
+        padding: 16px
+      }
+
+      .location {
+        margin-top: 32px;
+        font-size: 0.8rem;
+        opacity: 0.7;
+      }
+    }
+
   </style>
 
 </head>
 <body>
   <div id="video-backgrounds">
-    <video id="methodo-preview" class="bg-video" muted loop playsinline><source src="videos/methodo-preview.webm"></video>
-    <video id="myhood-preview" class="bg-video" muted loop playsinline><source src="videos/myhood-preview.webm"></video>
-    <video id="spuma-preview" class="bg-video" muted loop playsinline><source src="videos/spuma-preview.webm"></video>
-    <video id="numera-preview" class="bg-video" muted loop playsinline><source src="videos/numera-preview.webm"></video>
+    <video id="methodo-preview" class="bg-video" muted loop playsinline><source src="https://pub-23c9d7cb793f4f3aa4454db4a91905ef.r2.dev/methodo-preview.webm"></video>
+    <video id="myhood-preview" class="bg-video" muted loop playsinline><source src="https://pub-23c9d7cb793f4f3aa4454db4a91905ef.r2.dev/myhood-preview.webm"></video>
+    <video id="spuma-preview" class="bg-video" muted loop playsinline><source src="https://pub-23c9d7cb793f4f3aa4454db4a91905ef.r2.dev/spuma-preview.webm"></video>
+    <video id="numera-preview" class="bg-video" muted loop playsinline><source src="https://pub-23c9d7cb793f4f3aa4454db4a91905ef.r2.dev/numera-preview.webm"></video>
+    <video id="spfobservatory-preview" class="bg-video" muted loop playsinline><source src="https://pub-23c9d7cb793f4f3aa4454db4a91905ef.r2.dev/spfobservatory-preview.webm"></video>
+
   </div>
 
   <nav>
@@ -167,22 +225,22 @@
 
     <section class="bottom-wrapper">
       <section class="work-list">
-        <a href="https://www.methodomkt.com.br/" target="_blank" class="project-row">
+        <a href="https://www.myhood.com.br/" target="_blank" class="project-row" data-video-id="myhood-preview">
           <span class="number">001</span>
-          <span class="title">Methodo</span>
-          <span class="category">Marketing, Agency</span>
-        </a>
-        <a href="https://www.myhood.com.br/" target="_blank" class="project-row">
-          <span class="number">002</span>
           <span class="title">Myhood</span>
           <span class="category">Startup, SaaS</span>
         </a>
-        <a href="https://www.spuma.studio/" target="_blank" class="project-row">
-          <span class="number">003</span>
+        <a href="https://www.spuma.studio/" target="_blank" class="project-row" data-video-id="spuma-preview">
+          <span class="number">002</span>
           <span class="title">Spuma</span>
           <span class="category">Architecture</span>
         </a>
-        <a href="https://www.numerarh.com/" target="_blank" class="project-row">
+        <a href="https://www.methodomkt.com.br/" target="_blank" class="project-row" data-video-id="methodo-preview">
+          <span class="number">003</span>
+          <span class="title">Methodo</span>
+          <span class="category">Marketing, Agency</span>
+        </a>
+        <a href="https://www.numerarh.com/" target="_blank" class="project-row" data-video-id="numera-preview">
           <span class="number">004</span>
           <span class="title">Numera</span>
           <span class="category">Human Resources</span>
@@ -190,38 +248,50 @@
       </section>
 
       <section class="location">
-        <footer><p>Based in Brazil. Working worldwide.</p></footer>
+        <p>Based in Brazil. Working worldwide.</p>
       </section>
     </section>
   </main>
 
 <script>
-  const lines = document.querySelectorAll('.project-row, .contact');
   const videos = document.querySelectorAll('.bg-video');
-  
-  lines.forEach((line, index) => {
+  const projectRows = document.querySelectorAll('.project-row');
+  const contactBtn = document.querySelector('.contact');
 
-    line.addEventListener('mouseenter', () => {
-      const InstantSound = new Audio('sounds/menu-selection.mp3');
-      InstantSound.play();
-      
-      if (line.classList.contains('project-row')) {
-      
-        videos.forEach(v => v.style.display='none');
+  // Som para o botão de contato
+  contactBtn.addEventListener('mouseenter', () => {
+    new Audio('sounds/menu-selection.mp3').play();
+  });
 
-        if (videos[index]) {
-          videos[index].style.display = 'block';
-          videos[index].play(); 
-        }
+  projectRows.forEach(row => {
+    row.addEventListener('mouseenter', () => {
+      // 1. Toca o som
+      new Audio('sounds/menu-selection.mp3').play();
+      
+      // 2. Pega o ID que você escreveu na linha (ex: "methodo-preview")
+      const targetVideoId = row.getAttribute('data-video-id');
+      const targetVideo = document.getElementById(targetVideoId);
+
+      // 3. Esconde todos os vídeos
+      videos.forEach(v => {
+        v.style.display = 'none';
+        v.pause();
+      });
+
+      // 4. Mostra e toca apenas o vídeo que tem o ID correspondente
+      if (targetVideo) {
+        targetVideo.style.display = 'block';
+        targetVideo.play();
       }
     });
 
-    line.addEventListener('mouseleave', () => {
-      if (line.classList.contains('project-row')) {
-        if (videos[index]) {
-          videos[index].style.display = 'none';
-          videos[index].pause();
-        }
+    row.addEventListener('mouseleave', () => {
+      const targetVideoId = row.getAttribute('data-video-id');
+      const targetVideo = document.getElementById(targetVideoId);
+      
+      if (targetVideo) {
+        targetVideo.style.display = 'none';
+        targetVideo.pause();
       }
     });
   });
