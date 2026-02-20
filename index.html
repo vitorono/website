@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vitor Ono | Web Designer</title>
+  <style>
+    @import url(css/satoshi.css);
+  
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body{
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: hsl(0, 0%, 0%);
+      color: white;
+      margin: 0;
+      font-family: 'Satoshi';
+      -webkit-font-smoothing: antialiased;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 24px;
+    }
+
+    .logo{
+      font-weight:700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: -0.05em;
+    }
+
+    .contact{
+      font-weight:700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: -0.05em;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .contact:hover{
+      background-color: white;
+      color: black;
+    }
+
+    h1{
+      font-family: Satoshi-Medium;
+      font-size: 2.2rem;
+      line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    .bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      display: none;
+      pointer-events: none;
+    }
+
+    .hero {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 0 0 24px 24px;
+      width: 100%;
+      max-width: 553px;
+      mix-blend-mode: difference;
+      z-index: 10;
+    }
+
+    .hero .h1-hero {
+      width: 100%;
+    }
+
+    .bottom-wrapper {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: last baseline;
+      padding: 24px 24px 40px 0px;
+    }
+
+    .location {
+      font-size: 0.9rem;
+    }
+
+    .work-list {
+      width: 100%;
+      max-width: 553px;
+    }
+
+    .project-row {
+      display: flex;
+      align-items: baseline;
+      padding: 4px 4px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      text-decoration: none;
+      color: inherit;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .project-row:hover {
+      background-color: white;
+      color: black;
+    }
+
+    .project-row .number {
+      width: 40px;
+      padding-right: 80px;
+    }
+
+    .project-row .title {
+      flex: 1;
+      padding-right: 32px;  
+    }
+
+    .project-row .category {
+      text-align: right;
+    }
+
+    
+  </style>
+
+</head>
+<body>
+  <div id="video-backgrounds">
+    <video id="methodo-preview" class="bg-video" muted loop playsinline><source src="videos/methodo-preview.webm"></video>
+    <video id="myhood-preview" class="bg-video" muted loop playsinline><source src="videos/myhood-preview.webm"></video>
+    <video id="spuma-preview" class="bg-video" muted loop playsinline><source src="videos/spuma-preview.webm"></video>
+    <video id="numera-preview" class="bg-video" muted loop playsinline><source src="videos/numera-preview.webm"></video>
+  </div>
+
+  <nav>
+    <div class="logo">Vitor Ono</div>
+    <a href="mailto:vitorono.design@gmail.com" target="_blank" class="contact">Contact</a>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <h1 class="h1-hero">Solo studio turning brand identity into websites. Direction, design, build.</h1>
+    </section>
+
+
+    <section class="bottom-wrapper">
+      <section class="work-list">
+        <a href="https://www.methodomkt.com.br/" target="_blank" class="project-row">
+          <span class="number">001</span>
+          <span class="title">Methodo</span>
+          <span class="category">Marketing, Agency</span>
+        </a>
+        <a href="https://www.myhood.com.br/" target="_blank" class="project-row">
+          <span class="number">002</span>
+          <span class="title">Myhood</span>
+          <span class="category">Startup, SaaS</span>
+        </a>
+        <a href="https://www.spuma.studio/" target="_blank" class="project-row">
+          <span class="number">003</span>
+          <span class="title">Spuma</span>
+          <span class="category">Architecture</span>
+        </a>
+        <a href="https://www.numerarh.com/" target="_blank" class="project-row">
+          <span class="number">004</span>
+          <span class="title">Numera</span>
+          <span class="category">Human Resources</span>
+        </a>
+      </section>
+
+      <section class="location">
+        <footer><p>Based in Brazil. Working worldwide.</p></footer>
+      </section>
+    </section>
+  </main>
+
+<script>
+  const lines = document.querySelectorAll('.project-row, .contact');
+  const videos = document.querySelectorAll('.bg-video');
+  
+  lines.forEach((line, index) => {
+
+    line.addEventListener('mouseenter', () => {
+      const InstantSound = new Audio('sounds/menu-selection.mp3');
+      InstantSound.play();
+      
+      if (line.classList.contains('project-row')) {
+      
+        videos.forEach(v => v.style.display='none');
+
+        if (videos[index]) {
+          videos[index].style.display = 'block';
+          videos[index].play(); 
+        }
+      }
+    });
+
+    line.addEventListener('mouseleave', () => {
+      if (line.classList.contains('project-row')) {
+        if (videos[index]) {
+          videos[index].style.display = 'none';
+          videos[index].pause();
+        }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
