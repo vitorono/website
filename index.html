@@ -359,24 +359,28 @@
   </main>
 
 <script>
-  // 1. OTIMIZAÇÃO DE ÁUDIO (Performance de Produção)
-  // Pré-carregamos o áudio uma única vez para evitar requisições de rede em cada hover
-  const hoverSound = new Audio('sounds/menu-selection.mp3');
-  hoverSound.preload = 'auto';
-  hoverSound.load(); 
-
-  // Selecionamos todos os elementos interativos para o som
-  const allLinks = document.querySelectorAll('.project-row, .socials-trigger, .socials-overlay a, .email');
+  // 1. OTIMIZAÇÃO DE ÁUDIO (Pool System para Reset Instantâneo)
+  // Pré-carregamos o arquivo para o cache do navegador
+  const audioUrl = 'sounds/menu-selection.mp3';
+  const audioPreload = new Audio(audioUrl);
+  audioPreload.preload = 'auto';
+  audioPreload.load();
 
   function playSound() {
-    // Resetamos o áudio para o início (essencial para houver sequenciais rápidos)
-    hoverSound.currentTime = 0; 
+    // Criamos uma nova instância temporária para cada hover.
+    // Como o arquivo já está no cache (preload), o disparo é imediato e permite sobreposição.
+    const soundInstance = new Audio(audioUrl);
+    soundInstance.play().catch(() => {});
     
-    // O catch evita erros caso o usuário ainda não tenha interagido com a página
-    hoverSound.play().catch(() => {}); 
+    // Opcional: Removemos a instância da memória após tocar para manter a performance
+    soundInstance.onended = function() {
+      this.remove();
+    };
   }
 
-  // Atribuímos o som a todos os links
+  // Selecionamos todos os elementos interativos
+  const allLinks = document.querySelectorAll('.project-row, .socials-trigger, .socials-overlay a, .email');
+
   allLinks.forEach(link => {
     link.addEventListener('mouseenter', playSound);
   });
@@ -391,7 +395,6 @@
       const targetVideoId = row.getAttribute('data-video-id');
       const targetVideo = document.getElementById(targetVideoId);
 
-      // Pausa e esconde todos os vídeos antes de mostrar o novo
       videos.forEach(v => {
         v.style.display = 'none';
         v.pause();
@@ -419,14 +422,12 @@
   const wrapper = document.querySelector('.vitor-wrapper');
 
   trigger.addEventListener('click', (e) => {
-    // Apenas aplica a lógica de clique se estiver em telas menores que 768px
     if (window.innerWidth <= 768) {
       e.preventDefault();
       wrapper.classList.toggle('is-open');
     }
   });
 
-  // Fecha o menu se o usuário clicar em qualquer lugar fora dele
   document.addEventListener('click', (e) => {
     if (!wrapper.contains(e.target)) {
       wrapper.classList.remove('is-open');
