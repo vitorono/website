@@ -359,31 +359,39 @@
   </main>
 
 <script>
-  const videos = document.querySelectorAll('.bg-video');
-  const projectRows = document.querySelectorAll('.project-row');
-  
-  // 1. Selecionamos todos os links que devem emitir som
+  // 1. OTIMIZAÇÃO DE ÁUDIO (Performance de Produção)
+  // Pré-carregamos o áudio uma única vez para evitar requisições de rede em cada hover
+  const hoverSound = new Audio('sounds/menu-selection.mp3');
+  hoverSound.preload = 'auto';
+  hoverSound.load(); 
+
+  // Selecionamos todos os elementos interativos para o som
   const allLinks = document.querySelectorAll('.project-row, .socials-trigger, .socials-overlay a, .email');
 
-  // 2. Função de disparo instantâneo (a que resolveu o delay antes)
   function playSound() {
-    // Criar uma nova instância toda vez garante que o som comece do zero absoluto
-    // e permite que vários sons se sobreponham se o usuário for muito rápido
-    const instantSound = new Audio('sounds/menu-selection.mp3');
-    instantSound.play().catch(() => {}); 
+    // Resetamos o áudio para o início (essencial para houver sequenciais rápidos)
+    hoverSound.currentTime = 0; 
+    
+    // O catch evita erros caso o usuário ainda não tenha interagido com a página
+    hoverSound.play().catch(() => {}); 
   }
 
-  // 3. Aplicar a todos os links
+  // Atribuímos o som a todos os links
   allLinks.forEach(link => {
     link.addEventListener('mouseenter', playSound);
   });
 
-  // 4. Lógica de Vídeos (mantida)
+
+  // 2. LÓGICA DE VÍDEOS (Background Hovers)
+  const videos = document.querySelectorAll('.bg-video');
+  const projectRows = document.querySelectorAll('.project-row');
+  
   projectRows.forEach(row => {
     row.addEventListener('mouseenter', () => {
       const targetVideoId = row.getAttribute('data-video-id');
       const targetVideo = document.getElementById(targetVideoId);
 
+      // Pausa e esconde todos os vídeos antes de mostrar o novo
       videos.forEach(v => {
         v.style.display = 'none';
         v.pause();
@@ -405,17 +413,20 @@
     });
   });
 
-  // 5. Lógica Mobile (mantida)
+
+  // 3. LÓGICA MOBILE (Menu de Sociais)
   const trigger = document.querySelector('.socials-trigger');
   const wrapper = document.querySelector('.vitor-wrapper');
 
   trigger.addEventListener('click', (e) => {
+    // Apenas aplica a lógica de clique se estiver em telas menores que 768px
     if (window.innerWidth <= 768) {
       e.preventDefault();
       wrapper.classList.toggle('is-open');
     }
   });
 
+  // Fecha o menu se o usuário clicar em qualquer lugar fora dele
   document.addEventListener('click', (e) => {
     if (!wrapper.contains(e.target)) {
       wrapper.classList.remove('is-open');
