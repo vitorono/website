@@ -17,6 +17,22 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Vitor Ono | Web Design">
 
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z0VC1MY75G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-Z0VC1MY75G');
+
+    // Função extra para medir qual projeto é mais clicado
+    function trackProjectClick(projectName) {
+      gtag('event', 'project_view', {
+        'project_name': projectName
+      });
+    }
+  </script>
+
   <link rel="preload" href="css/fonts/Satoshi-Medium.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/satoshi.css">
   <link rel="icon" type="image/png" href="favicon.png">
@@ -330,22 +346,22 @@
 
     <section class="bottom-wrapper">
       <section class="work-list">
-        <a href="https://www.myhood.com.br/" target="_blank" class="project-row" data-video-id="myhood-preview">
+        <a href="https://www.myhood.com.br/" target="_blank" class="project-row" data-video-id="myhood-preview" onclick="trackProjectClick('MyHood')">
           <span class="number">001</span>
           <span class="title">Myhood</span>
           <span class="category">Startup, SaaS</span>
         </a>
-        <a href="https://www.spuma.studio/" target="_blank" class="project-row" data-video-id="spuma-preview">
+        <a href="https://www.spuma.studio/" target="_blank" class="project-row" data-video-id="spuma-preview" onclick="trackProjectClick('Spuma')">
           <span class="number">002</span>
           <span class="title">Spuma</span>
           <span class="category">Architecture</span>
         </a>
-        <a href="https://www.methodomkt.com.br/" target="_blank" class="project-row" data-video-id="methodo-preview">
+        <a href="https://www.methodomkt.com.br/" target="_blank" class="project-row" data-video-id="methodo-preview" onclick="trackProjectClick('Methodo')">
           <span class="number">003</span>
           <span class="title">Methodo</span>
           <span class="category">Marketing, Agency</span>
         </a>
-        <a href="https://www.numerarh.com/" target="_blank" class="project-row" data-video-id="numera-preview">
+        <a href="https://www.numerarh.com/" target="_blank" class="project-row" data-video-id="numera-preview" onclick="trackProjectClick('Numera')">
           <span class="number">004</span>
           <span class="title">Numera</span>
           <span class="category">Human Resources</span>
